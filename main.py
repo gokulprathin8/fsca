@@ -55,7 +55,6 @@ def convert_all_hdf_in_folder(folder_path, output_folder):
 
 def merge_tifs(folder_path, output_file):
   tif_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.tif')]
-  # gdal_command = ['gdal_merge.py', '-o', output_file, '-of', 'GTiff', '-r', 'cubic'] + tif_files
   gdal_command = gdal_command = ['gdalwarp', '-r', 'cubic'] + tif_files + [output_file]
   subprocess.run(gdal_command)
 
@@ -130,12 +129,14 @@ def download_tiles_and_merge():
   for i in date_list:
     current_date = i.strftime("%Y-%m-%d")
     earthaccess.login(strategy="netrc")
-    results = earthaccess.search_data(short_name="MOD10A1", cloud_hosted=True, bounding_box=(-124.77, 24.52, -66.95, 49.38),
-                            temporal=(current_date, current_date))
+    results = earthaccess.search_data(short_name="MOD10A1", cloud_hosted=True,
+                                      bounding_box=(-124.77, 24.52, -66.95, 49.38),
+                                      temporal=(current_date, current_date))
     earthaccess.download(results, input_folder)
     convert_all_hdf_in_folder(input_folder, output_folder)
     merge_tifs(folder_path=output_folder, output_file=f'{modis_day_wise}/{current_date}__snow_cover.tif')
     delete_files_in_folder(input_folder)  # cleanup
     delete_files_in_folder(output_folder)  # cleanup
+
 
 download_tiles_and_merge()
