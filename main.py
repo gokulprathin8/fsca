@@ -8,8 +8,8 @@ import requests
 import earthaccess
 from osgeo import gdal
 
-start_date = datetime(2019, 1, 1)
-end_date = datetime(2019, 1, 3)
+start_date = datetime(2019, 9, 28)
+end_date = datetime(2019, 12, 31)
 tile_list = ["h08v04", "h08v05", "h09v04", "h09v05", "h10v04", "h10v05", "h11v04", "h11v05", "h12v04", "h12v05",
              "h13v04", "h13v05", "h15v04", "h16v03", "h16v04", ]
 input_folder = os.getcwd() + "/temp/"
